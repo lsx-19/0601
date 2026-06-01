@@ -1,0 +1,703 @@
+# Interactive Portfolio Website (HTML / CSS / JavaScript)
+
+```html
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive Portfolio Website" />
+  <title>Lin Shi Xuan | Portfolio</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- AOS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    :root {
+      --bg: #09090f;
+      --card: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.1);
+      --text: #ffffff;
+      --sub: #a1a1aa;
+      --primary: #6c63ff;
+      --secondary: #00d4ff;
+      --glow: 0 0 20px rgba(108,99,255,.7);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, #151530 0%, #09090f 60%);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    h1,h2,h3 {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    section {
+      padding: 100px 8%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 20px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(12px);
+      background: rgba(0,0,0,.3);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      z-index: 999;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: white;
+    }
+
+    .logo span {
+      color: var(--secondary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      transition: .3s;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--secondary);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .hero-text {
+      max-width: 650px;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .typing {
+      color: var(--secondary);
+      font-size: 1.3rem;
+      margin-bottom: 24px;
+      min-height: 40px;
+    }
+
+    .hero p {
+      color: var(--sub);
+      line-height: 1.8;
+      margin-bottom: 35px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 30px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: .3s;
+      box-shadow: var(--glow);
+    }
+
+    .btn:hover {
+      transform: translateY(-4px) scale(1.03);
+    }
+
+    .hero-image {
+      position: relative;
+    }
+
+    .hero-image img {
+      width: 350px;
+      border-radius: 30px;
+      border: 2px solid rgba(255,255,255,.1);
+      box-shadow: 0 0 40px rgba(0,212,255,.2);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 50px;
+      text-align: center;
+    }
+
+    .section-title span {
+      color: var(--secondary);
+    }
+
+    .glass {
+      background: var(--card);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      border-radius: 24px;
+      padding: 30px;
+      transition: .4s;
+    }
+
+    .glass:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 30px rgba(0,212,255,.15);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+      gap: 30px;
+    }
+
+    .about-grid p {
+      color: var(--sub);
+      line-height: 1.8;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: 25px;
+    }
+
+    .skill-card i {
+      font-size: 2.5rem;
+      margin-bottom: 18px;
+      color: var(--secondary);
+    }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: rgba(255,255,255,.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 16px;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg,var(--primary),var(--secondary));
+      animation: load 2s ease;
+    }
+
+    @keyframes load {
+      from {
+        width: 0;
+      }
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+      gap: 30px;
+    }
+
+    .portfolio-card img {
+      width: 100%;
+      border-radius: 18px;
+      margin-bottom: 18px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .tag {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(108,99,255,.15);
+      color: var(--secondary);
+      font-size: .85rem;
+    }
+
+    .links {
+      display: flex;
+      gap: 15px;
+      margin-top: 18px;
+    }
+
+    .links a {
+      color: white;
+      text-decoration: none;
+      transition: .3s;
+    }
+
+    .links a:hover {
+      color: var(--secondary);
+    }
+
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(320px,1fr));
+      gap: 30px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    input, textarea {
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.05);
+      color: white;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: none;
+    }
+
+    .socials {
+      display: flex;
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .socials a {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.06);
+      color: white;
+      transition: .3s;
+      text-decoration: none;
+      font-size: 1.2rem;
+    }
+
+    .socials a:hover {
+      transform: scale(1.1);
+      box-shadow: var(--glow);
+      color: var(--secondary);
+    }
+
+    footer {
+      padding: 30px;
+      text-align: center;
+      color: var(--sub);
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    .scroll-down {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    @keyframes bounce {
+      0%,100% {
+        transform: translate(-50%,0);
+      }
+      50% {
+        transform: translate(-50%,10px);
+      }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    @media(max-width: 900px) {
+      .hero {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding-top: 100px;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media(max-width: 500px) {
+      .hero h1 {
+        font-size: 2.3rem;
+      }
+
+      .hero-image img {
+        width: 280px;
+      }
+
+      section {
+        padding: 80px 6%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="particles"></canvas>
+
+  <nav class="navbar">
+    <div class="logo">LS<span>X</span></div>
+
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-text" data-aos="fade-right">
+      <h1>
+        Hi, I'm <span>Lin Shi Xuan</span>
+      </h1>
+
+      <div class="typing"></div>
+
+      <p>
+        我是一位熱愛影像、設計與前端互動的創作者，
+        專注於打造具有科技感與沉浸式體驗的數位作品。
+      </p>
+
+      <a href="#portfolio" class="btn">View Portfolio</a>
+    </div>
+
+    <div class="hero-image" data-aos="fade-left">
+      <img src="1742665477917.jpg" alt="profile">
+    </div>
+
+    <div class="scroll-down">
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2 class="section-title" data-aos="fade-up">
+      About <span>Me</span>
+    </h2>
+
+    <div class="about-grid">
+      <div class="glass" data-aos="fade-up">
+        <h3>個人介紹</h3>
+        <p>
+          目前專注於數位內容創作、UI/UX 設計與前端開發，
+          喜歡將動畫、視覺與互動體驗結合在網站中。
+        </p>
+      </div>
+
+      <div class="glass" data-aos="fade-up" data-aos-delay="100">
+        <h3>興趣與專長</h3>
+        <p>
+          影片剪輯、品牌設計、攝影、網頁設計、視覺策展與互動動畫。
+        </p>
+      </div>
+
+      <div class="glass" data-aos="fade-up" data-aos-delay="200">
+        <h3>學歷資訊</h3>
+        <p>
+          國立馬公高中 / 資訊傳播相關領域學習與創作。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2 class="section-title" data-aos="fade-up">
+      My <span>Skills</span>
+    </h2>
+
+    <div class="skills-grid">
+
+      <div class="glass skill-card" data-aos="zoom-in">
+        <i class="fa-solid fa-table-tennis-paddle-ball"></i>
+        <h3>Sport</h3>
+        <div class="progress"><span style="width:95%"></span></div>
+      </div>
+
+      <div class="glass skill-card" data-aos="zoom-in" data-aos-delay="100">
+        <i class="fa-solid fa-envelope"></i>
+        <h3>Social</h3>
+        <div class="progress"><span style="width:90%"></span></div>
+      </div>
+
+      <div class="glass skill-card" data-aos="zoom-in" data-aos-delay="200">
+        <i class="fa-solid fa-cat"></i>
+        <h3>Animal</h3>
+        <div class="progress"><span style="width:95%"></span></div>
+      </div>
+
+      <div class="glass skill-card" data-aos="zoom-in" data-aos-delay="300">
+        <i class="fa-regular fa-hand-scissors"></i>
+        <h3>PR</h3>
+        <div class="progress"><span style="width:91%"></span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="portfolio">
+    <h2 class="section-title" data-aos="fade-up">
+      Featured <span>Projects</span>
+    </h2>
+
+    <div class="portfolio-grid">
+
+      <div class="glass portfolio-card" data-aos="fade-up">
+        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop" alt="project">
+
+        <h3>Interactive Web Design</h3>
+
+        <p>
+          具有科技感與動畫互動效果的個人作品集網站。
+        </p>
+
+        <div class="tags">
+          <div class="tag">HTML</div>
+          <div class="tag">CSS</div>
+          <div class="tag">JavaScript</div>
+        </div>
+
+        <div class="links">
+          <a href="#">GitHub</a>
+          <a href="#">Live Demo</a>
+        </div>
+      </div>
+
+      <div class="glass portfolio-card" data-aos="fade-up" data-aos-delay="100">
+        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop" alt="project">
+
+        <h3>Creative Media Project</h3>
+
+        <p>
+          結合影像、視覺與品牌設計的數位創作企劃。
+        </p>
+
+        <div class="tags">
+          <div class="tag">Branding</div>
+          <div class="tag">Motion</div>
+          <div class="tag">UI Design</div>
+        </div>
+
+        <div class="links">
+          <a href="#">GitHub</a>
+          <a href="#">Live Demo</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2 class="section-title" data-aos="fade-up">
+      Contact <span>Me</span>
+    </h2>
+
+    <div class="contact-wrapper">
+
+      <div class="glass" data-aos="fade-right">
+        <h3>Let's Connect</h3>
+        <p style="margin-top:15px;color:var(--sub)">
+          歡迎聯繫合作、設計專案或創意交流。
+        </p>
+
+        <div class="socials">
+          <a href="#"><i class="fa-brands fa-github"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+      </div>
+
+      <div class="glass" data-aos="fade-left">
+        <form id="contactForm">
+          <input type="text" placeholder="Your Name" required>
+          <input type="email" placeholder="Your Email" required>
+          <textarea placeholder="Your Message"></textarea>
+          <button class="btn" type="submit">Send Message</button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Lin Shi Xuan — Interactive Portfolio Website
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true
+    });
+
+    // Typing Effect
+    const typingText = [
+      'Frontend Developer',
+      'Creative Designer',
+      'Digital Creator'
+    ];
+
+    let count = 0;
+    let index = 0;
+    let currentText = '';
+    let letter = '';
+
+    (function type(){
+      if(count === typingText.length){
+        count = 0;
+      }
+
+      currentText = typingText[count];
+      letter = currentText.slice(0, ++index);
+
+      document.querySelector('.typing').textContent = letter;
+
+      if(letter.length === currentText.length){
+        count++;
+        index = 0;
+      }
+
+      setTimeout(type, 120);
+    })();
+
+    // Form Submit
+    document.getElementById('contactForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      alert('Message Sent Successfully!');
+    });
+
+    // Particles Background
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particlesArray = [];
+
+    class Particle {
+      constructor(){
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 - 0.5;
+      }
+
+      update(){
+        this.x += this.speedX;
+        this.y += this.speedY;
+      }
+
+      draw(){
+        ctx.fillStyle = 'rgba(0,212,255,0.7)';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles(){
+      particlesArray = [];
+      for(let i = 0; i < 80; i++){
+        particlesArray.push(new Particle());
+      }
+    }
+
+    function animateParticles(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      particlesArray.forEach(particle => {
+        particle.update();
+        particle.draw();
+      });
+
+      requestAnimationFrame(animateParticles);
+    }
+
+    initParticles();
+    animateParticles();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initParticles();
+    });
+  </script>
+
+</body>
+</html>
+```
